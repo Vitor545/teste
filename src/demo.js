@@ -19,17 +19,166 @@ const MenuProps = {
   }
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder"
+export const consTeste = [{
+  codigo: 'ATT_3874',
+  nomeApresentacao: 'Gás / Fluído refrigerante',
+  dominio: [{
+    codigo: '01',
+    descricao: 'R12',
+  }, {
+    codigo: '02',
+    descricao: 'R1234yf',
+  }, {
+    codigo: '03',
+    descricao: 'R134a',
+  }, {
+    codigo: '04',
+    descricao: 'R22',
+  }, {
+    codigo: '05',
+    descricao: 'R290',
+  }, {
+    codigo: '06',
+    descricao: 'R404A',
+  }, {
+    codigo: '07',
+    descricao: 'R407C',
+  }, {
+    codigo: '08',
+    descricao: 'R410A',
+  }, {
+    codigo: '09',
+    descricao: 'R448A',
+  }, {
+    codigo: '10',
+    descricao: 'R449A',
+  }, {
+    codigo: '11',
+    descricao: 'R452A',
+  }, {
+    codigo: '12',
+    descricao: 'R507',
+  }, {
+    codigo: '13',
+    descricao: 'R513A',
+  }, {
+    codigo: '14',
+    descricao: 'R600a',
+  }, {
+    codigo: '99',
+    descricao: 'Outros',
+  }],
+  objetivos: [{
+    codigo: 7,
+    descricao: 'Produto',
+  }],
+}, {
+  codigo: 'ATT_3878',
+  nomeApresentacao: 'Gás / Fluído refrigerante',
+  dominio: [{
+    codigo: '01',
+    descricao: 'R12',
+  }, {
+    codigo: '02',
+    descricao: 'R1234yf',
+  }, {
+    codigo: '03',
+    descricao: 'R134a',
+  }, {
+    codigo: '04',
+    descricao: 'R22',
+  }, {
+    codigo: '05',
+    descricao: 'R290',
+  }, {
+    codigo: '06',
+    descricao: 'R404A',
+  }, {
+    codigo: '07',
+    descricao: 'R407C',
+  }, {
+    codigo: '08',
+    descricao: 'R410A',
+  }, {
+    codigo: '09',
+    descricao: 'R448A',
+  }, {
+    codigo: '10',
+    descricao: 'R449A',
+  }, {
+    codigo: '11',
+    descricao: 'R452A',
+  }, {
+    codigo: '12',
+    descricao: 'R507',
+  }, {
+    codigo: '13',
+    descricao: 'R513A',
+  }, {
+    codigo: '14',
+    descricao: 'R600a',
+  }, {
+    codigo: '99',
+    descricao: 'Outros',
+  }],
+  objetivos: [{
+    codigo: 7,
+    descricao: 'Produto',
+  }],
+}, {
+  codigo: 'ATT_3879',
+  nomeApresentacao: 'Gás / Fluído refrigerante',
+  dominio: [{
+    codigo: '01',
+    descricao: 'R12',
+  }, {
+    codigo: '02',
+    descricao: 'R1234yf',
+  }, {
+    codigo: '03',
+    descricao: 'R134a',
+  }, {
+    codigo: '04',
+    descricao: 'R22',
+  }, {
+    codigo: '05',
+    descricao: 'R290',
+  }, {
+    codigo: '06',
+    descricao: 'R404A',
+  }, {
+    codigo: '07',
+    descricao: 'R407C',
+  }, {
+    codigo: '08',
+    descricao: 'R410A',
+  }, {
+    codigo: '09',
+    descricao: 'R448A',
+  }, {
+    codigo: '10',
+    descricao: 'R449A',
+  }, {
+    codigo: '11',
+    descricao: 'R452A',
+  }, {
+    codigo: '12',
+    descricao: 'R507',
+  }, {
+    codigo: '13',
+    descricao: 'R513A',
+  }, {
+    codigo: '14',
+    descricao: 'R600a',
+  }, {
+    codigo: '99',
+    descricao: 'Outros',
+  }],
+  objetivos: [{
+    codigo: 7,
+    descricao: 'Produto',
+  }],
+},
 ];
 
 function getStyles(name, personName, theme) {
@@ -43,50 +192,50 @@ function getStyles(name, personName, theme) {
 
 export default function MultipleSelectChip() {
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
+  const [stateAll, setStateAll] = React.useState({});
 
-  const handleChange = (event) => {
-    console.log(event.target);
-    const {
-      target: { value }
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+  console.log(stateAll)
+
+  const handleChange = (event, selectId) => {
+    const { target: { value } } = event;
+    setStateAll({...stateAll, [selectId]: value})
   };
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      {consTeste.map(el => (
+        <FormControl sx={{ m: 1, width: 300 }}>
         <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
-          value={personName}
-          onChange={handleChange}
+          value={stateAll[el.codigo] || []}
+          onChange={(e) => handleChange(e, el.codigo)}
           input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selected.map((value) => (
+          renderValue={(selected) => {
+            const descriptionSelected = el.dominio.filter(el => selected.includes(el.codigo)).map(el => el.descricao)
+            return (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {descriptionSelected.map((value) => (
                 <Chip key={value} label={value} />
               ))}
             </Box>
-          )}
+            )
+          }}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
+          {el.dominio.map(({descricao, codigo}) => (
             <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
+              key={codigo}
+              value={codigo}
             >
-              {name}
+              {descricao}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
+      ))}
     </div>
   );
 }
